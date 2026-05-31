@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Number Bricks</title>
+  <link rel="icon" href="Priyanshu.jpeg">
+  <style>
+    body {
+      font-family: Arial;
+      text-align: center;
+      background: #faf8ef;
+    }
+
+    h1 {
+      color: #776e65;
+    }
+
+    #score {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+
+    #game {
+      width: 340px;
+      height: 340px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      background: #bbada0;
+      padding: 5px;
+      border-radius: 10px;
+    }
+
+    .cell {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 5px;
+      color: #776e65;
+    }
+
+    .n0 { background: #cdc1b4; }
+    .n2 { background: #eee4da; }
+    .n4 { background: #ede0c8; }
+    .n8 { background: #f2b179; color: white; }
+    .n16 { background: #f59563; color: white; }
+    .n32 { background: #f67c5f; color: white; }
+    .n64 { background: #f65e3b; color: white; }
+    .n128 { background: #edcf72; color: white; }
+    .n256 { background: #edcc61; color: white; }
+    .n512 { background: #edc850; color: white; }
+    .n1024 { background: #edc53f; color: white; }
+    .n2048 { background: gold; color: white; }
+
+    #gameOver {
+      display: none;
+      font-size: 30px;
+      color: red;
+      margin-top: 10px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Number Brick</h1>
+<div id="score">Score: 0</div>
+<div id="game"></div>
+<div id="gameOver">Game Over 💀</div>
+<button onclick="restart()">Restart</button>
+
+<script>
+  let board, score;
+
+  function start() {
+    board = Array(4).fill().map(() => Array(4).fill(0));
+    score = 0;
+    document.getElementById("gameOver").style.display = "none";
+    addNumber();
+    addNumber();
+    draw();
+  }
+
+  function draw() {
+    const game = document.getElementById("game");
+    game.innerHTML = "";
+
+    board.forEach(row => {
+      row.forEach(cell => {
+        let div = document.createElement("div");
+        div.className = "cell n" + cell;
+        div.textContent = cell === 0 ? "" : cell;
+        game.appendChild(div);
+      });
+    });
+
+    document.getElementById("score").textContent = "Score: " + score;
+  }
+
+  function addNumber() {
+    let empty = [];
+    board.forEach((row, r) => {
+      row.forEach((cell, c) => {
+        if (cell === 0) empty.push({r, c});
+      });
+    });
+
+    if (empty.length > 0) {
+      let {r, c} = empty[Math.floor(Math.random() * empty.length)];
+      board[r][c] = Math.random() > 0.5 ? 2 : 4;
+    }
+  }
+
+  function slide(row) {
+    row = row.filter(val => val);
+    for (let i = 0; i < row.length - 1; i++) {
+      if (row[i] === row[i + 1]) {
+        row[i] *= 2;
+        score += row[i];
+        row[i + 1] = 0;
+      }
+    }
+    row = row.filter(val => val);
+    while (row.length < 4) row.push(0);
+    return row;
+  }
+
+  function rotate() {
+    board = board[0].map((_, i) => board.map(row => row[i]).reverse());
+  }
+
+  function moveLeft() {
+    board = board.map(row => slide(row));
+  }
+
+  function moveRight() {
+    board = board.map(row => slide(row.reverse()).reverse());
+  }
+
+  function moveUp() {
+    rotate();
+    moveRight();
+    rotate(); rotate(); rotate();
+  }
+
+  function moveDown() {
+    rotate();
+    moveLeft();
+    rotate(); rotate(); rotate();
+  }
+
+  function isGameOver() {
+    for (let r = 0; r < 4; r++) {
+      for (let c = 0; c < 4; c++) {
+        if (board[r][c] === 0) return false;
+        if (c < 3 && board[r][c] === board[r][c + 1]) return false;
+        if (r < 3 && board[r][c] === board[r + 1][c]) return false;
+      }
+    }
+    return true;
+  }
+
+  document.addEventListener("keydown", e => {
+    let old = JSON.stringify(board);
+
+    if (e.key === "ArrowLeft") moveLeft();
+    if (e.key === "ArrowRight") moveRight();
+    if (e.key === "ArrowUp") moveUp();
+    if (e.key === "ArrowDown") moveDown();
+
+    if (old !== JSON.stringify(board)) {
+      addNumber();
+      draw();
+
+      if (isGameOver()) {
+        document.getElementById("gameOver").style.display = "block";
+      }
+    }
+  });
+
+  function restart() {
+    start();
+  }
+
+  start();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Roboto', arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #fff;
+}
+
+.login-box {
+    width: 450px;
+    padding: 40px;
+    border: 1px solid #dadce0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.logo {
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: 400;
+    margin: 10px 0;
+}
+
+.subtitle {
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+/* Floating Label Input */
+.input-group {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-size: 16px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border: 2px solid #1a73e8;
+    padding: 12px 14px; /* Offset for border width */
+}
+
+.input-group label {
+    position: absolute;
+    top: 13px;
+    left: 15px;
+    color: #5f6368;
+    pointer-events: none;
+    transition: 0.2s ease all;
+}
+
+/* Moves label up when typing or focused */
+.input-group input:focus ~ label,
+.input-group input:valid ~ label {
+    top: -10px;
+    left: 10px;
+    background: #fff;
+    padding: 0 5px;
+    font-size: 12px;
+    color: #1a73e8;
+}
+
+.forgot-link {
+    display: block;
+    text-align: left;
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 40px;
+}
+
+.guest-text {
+    text-align: left;
+    font-size: 14px;
+    color: #5f6368;
+    line-height: 1.4;
+    margin-bottom: 40px;
+}
+
+.guest-text a {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-account {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.btn-next {
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-next:hover {
+    background-color: #1765cc;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+}
